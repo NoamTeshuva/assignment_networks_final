@@ -5,15 +5,17 @@ HOST = 'localhost'
 PORT = 30552
 start_time = time.time()
 quality = 0
+MAX_QUALITY = 16
+MIN_QUALITY = 11
 
 class tcp_sender:
     def update_quality(self):
-        global quality, start_time
+        global quality, start_time, MAX_QUALITY, MIN_QUALITY
         rtt = time.time() - start_time
         rescale_rtt = rtt * 1000 - 500
-        if rescale_rtt > 18:
+        if rescale_rtt > MAX_QUALITY:
             quality = max(0, quality - 1)
-        elif rescale_rtt < 12:
+        elif rescale_rtt < MIN_QUALITY:
             quality = min(4, quality + 1)
         print(f"Received ACK from receiver. Calling my_function...{(quality, rescale_rtt)}")
 
